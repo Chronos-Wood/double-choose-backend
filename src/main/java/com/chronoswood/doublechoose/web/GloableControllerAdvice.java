@@ -1,20 +1,28 @@
 package com.chronoswood.doublechoose.web;
 
+import com.chronoswood.doublechoose.cache.key.AccountKey;
+import com.chronoswood.doublechoose.model.AccountDO;
 import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
+import com.chronoswood.doublechoose.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @ControllerAdvice
 @Slf4j
 public class GloableControllerAdvice {
 
+    private AccountService accountService;
+
+    public GloableControllerAdvice(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
