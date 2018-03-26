@@ -32,7 +32,7 @@ public class Monitor implements HandlerInterceptor {
 
         MDC.put("userName", request.getHeader("UserName"));
         MDC.put("role", Role.getRole(Integer.valueOf(request.getHeader("Role"))).getDescription());
-//        MDC.put("request", CharStreams.toString(request.getReader()));
+        MDC.put("request", CharStreams.toString(request.getReader()));
 
         return true;
     }
