@@ -16,6 +16,7 @@ target/
 *.iml
 *.iws
 out
+build
 
 # temp ignore
 *.log

@@ -1,6 +1,5 @@
 plugins {
     id 'io.franzbecker.gradle-lombok' version '1.11'
-    id 'java'
     id 'groovy'
 }
 
@@ -45,5 +44,25 @@ configurations.all {
                  'org.springframework:spring-core:5.0.4.RELEASE',
                  'org.springframework:spring-tx:5.0.4.RELEASE'
          )
+    }
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src/resources']
+        }
+    }
+
+    test {
+        groovy {
+            srcDirs = ['test']
+        }
+        resources{
+            srcDirs = ['test/resources']
+        }
     }
 }
