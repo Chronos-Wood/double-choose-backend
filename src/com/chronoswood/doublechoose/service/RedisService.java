@@ -2,6 +2,7 @@ package com.chronoswood.doublechoose.service;
 
 import com.alibaba.fastjson.JSON;
 import com.chronoswood.doublechoose.cache.KeyPrefix;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -9,6 +10,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Service
+@Slf4j
 public class RedisService {
 
     private JedisPool jedisPool;
@@ -132,6 +134,7 @@ public class RedisService {
             }
             return JSON.toJavaObject(JSON.parseObject(value), clazz);
         } catch (Exception e) {
+            log.error("",e);
             return null;
         }
     }

@@ -35,13 +35,13 @@ class Monitor implements HandlerInterceptor {
 
         if(accountDO==null){
             response.writer.print(objectMapper.writeValueAsString(new Result(Message.USER_NOT_EXIST, null)))
-            false
+            return false
         }
 
         MDC.put("userName", accountDO.userName)
         MDC.put("role", "$accountDO.role")
         MDC.put("request", CharStreams.toString(request.reader))
 
-        true
+        return true
     }
 }
