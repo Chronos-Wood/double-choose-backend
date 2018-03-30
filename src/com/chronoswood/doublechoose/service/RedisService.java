@@ -132,7 +132,7 @@ public class RedisService {
             if (clazz == String.class) {
                 return (T) value;
             }
-            return JSON.toJavaObject(JSON.parseObject(value), clazz);
+            return JSON.parseObject(value, clazz);
         } catch (Exception e) {
             log.error("",e);
             return null;
