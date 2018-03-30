@@ -5,16 +5,14 @@ import com.chronoswood.doublechoose.model.AccountVO;
 import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
 import com.chronoswood.doublechoose.service.AccountService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin("*")
 public class AccountController {
     private AccountService accountService;
 
