@@ -1,6 +1,8 @@
 package com.chronoswood.doublechoose.aop;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper
+import groovy.json.JsonOutput
+import groovy.util.logging.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,26 +16,23 @@ import java.util.Optional;
 
 @Component
 @Aspect
-public class ResultMonitor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResultMonitor.class);
+@Slf4j
+class ResultMonitor {
     private static final Logger PARAMS_LOGGER = LoggerFactory.getLogger("params");
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper
 
     @Around("execution(* com.chronoswood.doublechoose.web.controller..*(..))")
-    public Object doAround(ProceedingJoinPoint joinPoint) throws Exception {
-        Object result = null;
+    Object doAround(ProceedingJoinPoint joinPoint) throws Exception {
+        def result = null
         try{
             result = joinPoint.proceed();
         } catch (Throwable throwable) {
-            LOGGER.error("业务处理错误： {}", throwable);
+            log.error('业务处理错误:\n', throwable);
         }finally {
-            PARAMS_LOGGER.info("username：{} role：{}\n[request]：{}\n[response]：{}",
-                    MDC.get("userName"),
-                    MDC.get("role"),
-                    MDC.get("request"),
-                    objectMapper.writeValueAsString(Optional.ofNullable(result).orElse("")));
+            def response = JsonOutput.toJson(result)
+            PARAMS_LOGGER.info("username：$MDC.get('userName') role：$MDC.get('role')\n[request]：$MDC.get('request')\n[response]：$response")
         }
-        return result;
+        result;
     }
 }
