@@ -30,8 +30,8 @@ class ResultMonitor {
         } catch (Throwable throwable) {
             log.error('业务处理错误:\n', throwable);
         }finally {
-            def response = JsonOutput.toJson(result)
-            PARAMS_LOGGER.info("username：$MDC.get('userName') role：$MDC.get('role')\n[request]：$MDC.get('request')\n[response]：$response")
+            def response = objectMapper.writeValueAsString(result)
+            PARAMS_LOGGER.info("username：${MDC.get('userName')} role：${MDC.get('role')}\n[request]：${MDC.get('request')}\n[response]：$response")
         }
         result;
     }

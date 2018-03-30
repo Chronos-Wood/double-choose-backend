@@ -16,9 +16,11 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired  private AccountArgumentResovler resovler;
+    @Autowired  private Monitor monitor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new Monitor()).addPathPatterns("/api/user/");
+        registry.addInterceptor(monitor).addPathPatterns("/api/user/**").excludePathPatterns("/api/user/signin/**","/api/user/signup/**");
     }
 
     @Override
