@@ -10,11 +10,16 @@ public interface StudentService {
      */
     Student queryStudentByUsername(String userName);
 
-
     /**
      * 插入学生 仅插入学号、姓名、和性别。其余字段后续更新
      * @param student 要插入的学生
      * @return 受影响的行数 大于0成功
      */
     int addStudent(Student student);
+    /**
+     * 更新student的信息，这个方法会更新student中的所有非空数据项
+     * @param student
+     * @return 受影响的行数
+     */
+    int updateStudent(Student student);
 }
