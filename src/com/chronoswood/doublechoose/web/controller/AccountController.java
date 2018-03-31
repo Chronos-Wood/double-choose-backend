@@ -1,9 +1,6 @@
 package com.chronoswood.doublechoose.web.controller;
 
-import com.chronoswood.doublechoose.model.AccountDO;
-import com.chronoswood.doublechoose.model.AccountVO;
-import com.chronoswood.doublechoose.model.Message;
-import com.chronoswood.doublechoose.model.Result;
+import com.chronoswood.doublechoose.model.*;
 import com.chronoswood.doublechoose.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +18,8 @@ public class AccountController {
     }
 
     @PostMapping("/signin")
-    public Result<Boolean> doLogin(@Valid AccountVO accountVO, HttpServletResponse response) {
-        Message message = accountService.login(accountVO, response);
-        if(message.equals(Message.SUCCESS)) {
-            return Result.success(true);
-        }
-        return Result.error(message);
+    public Result<TokenVO> doLogin(@Valid AccountVO accountVO, HttpServletResponse response) {
+        return Result.success(accountService.login(accountVO, response));
     }
 
     @PostMapping("/signup")

@@ -1,6 +1,7 @@
 package com.chronoswood.doublechoose.web;
 
 import com.chronoswood.doublechoose.cache.key.AccountKey;
+import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.AccountDO;
 import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
@@ -27,7 +28,6 @@ public class GloableControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result<String> exceptionHandler(Exception e) {
-        log.error("error occurred: {}", e);
         if (e instanceof BindException) {
             BindException bindException = (BindException) e;
             List<ObjectError> errors = bindException.getAllErrors();
@@ -40,6 +40,11 @@ public class GloableControllerAdvice {
             }
             return Result.error(Message.BIND_ERROR.bindArgs(sb.toString()));
         }
+        if (e instanceof BizException) {
+            BizException be = (BizException) e;
+            return Result.error(be.getErrMsg());
+        }
+        log.error("error occurred: {}", e);
         return Result.error(Message.SERVER_ERROR);
     }
 }
