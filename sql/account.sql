@@ -7,6 +7,7 @@ CREATE TABLE account
     password VARCHAR(128) DEFAULT '' NOT NULL COMMENT '密码',
     salt VARCHAR(128) DEFAULt '' NOT NULL COMMENT '盐值',
     role INT UNSIGNED DEFAULT 0 NOT NULL COMMENT '账户角色，0为学生，1为教授，2为管理员',
+    authorized tinyint(3) NOT NULL DEFAULT 0 COMMENT '0.未审核，1.审核通过，2.审核未通过',
     create_time DATETIME(4) NOT NULL DEFAULT CURRENT_TIMESTAMP(4) COMMENT '创建日期',
     update_time DATETIME(4) NOT NULL DEFAULT CURRENT_TIMESTAMP(4) ON UPDATE CURRENT_TIMESTAMP(4) COMMENT '更新日期',
     UNIQUE INDEX uniq_idx_user_name(`user_name`)
