@@ -23,9 +23,8 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public Result<Boolean> singnup(@Valid AccountVO accountVO,
-                                   @Valid StudentSignUpVO studentVO) {
-        return Result.success(accountService.register(accountVO, studentVO));
+    public Result<Boolean> singnup(@RequestBody @Valid SignUpVO signUpVO) {
+        return Result.success(accountService.register(signUpVO));
     }
 
     @PutMapping("/operation")
