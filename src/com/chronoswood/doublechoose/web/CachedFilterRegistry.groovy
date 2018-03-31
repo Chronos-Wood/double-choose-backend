@@ -40,5 +40,7 @@ class CachedFilter extends GenericFilterBean {
         def response = new String(responseWrapper.contentAsByteArray)
         PARAMS_LOGGER.info("##username：${MDC.get('userName')} ##role：${MDC.get('role')} ##url：${wrappedRequest.requestURI}\n[request]：${MDC.get('request')} \n[response]：$response")
 
+        responseWrapper.copyBodyToResponse()
+
     }
 }
