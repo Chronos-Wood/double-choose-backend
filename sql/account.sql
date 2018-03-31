@@ -9,5 +9,5 @@ CREATE TABLE account
     role INT UNSIGNED DEFAULT 0 NOT NULL COMMENT '账户角色，0为学生，1为教授，2为管理员',
     create_time DATETIME(4) NOT NULL DEFAULT CURRENT_TIMESTAMP(4) COMMENT '创建日期',
     update_time DATETIME(4) NOT NULL DEFAULT CURRENT_TIMESTAMP(4) ON UPDATE CURRENT_TIMESTAMP(4) COMMENT '更新日期',
-    UNIQUE INDEX User_user_name_uindex(`user_name`)
+    UNIQUE INDEX uniq_idx_user_name(`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户表';
