@@ -11,4 +11,5 @@ public interface StudentDao {
     @Select("select * from student where user_naem=#{userName} limit 1")
     Student queryStudentByUsername(String userName);
 
+    int updateStudentInfo(Student student);
 }
