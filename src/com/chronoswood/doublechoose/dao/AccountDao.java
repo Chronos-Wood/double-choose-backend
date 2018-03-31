@@ -4,8 +4,10 @@ import com.chronoswood.doublechoose.model.AccountDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 @Mapper
+@Repository
 public interface AccountDao {
 
     @Insert("insert into account(id, user_name, password, salt, role, create_time) " +

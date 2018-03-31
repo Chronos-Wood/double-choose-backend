@@ -3,14 +3,13 @@ package com.chronoswood.doublechoose.service.impl;
 import com.chronoswood.doublechoose.cache.key.AccountKey;
 import com.chronoswood.doublechoose.dao.AccountDao;
 import com.chronoswood.doublechoose.exception.BizException;
-import com.chronoswood.doublechoose.model.AccountDO;
-import com.chronoswood.doublechoose.model.AccountVO;
-import com.chronoswood.doublechoose.model.Message;
-import com.chronoswood.doublechoose.model.TokenVO;
+import com.chronoswood.doublechoose.model.*;
 import com.chronoswood.doublechoose.service.AccountService;
 import com.chronoswood.doublechoose.service.RedisService;
+import com.chronoswood.doublechoose.service.StudentService;
 import com.chronoswood.doublechoose.util.MD5Util;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +20,21 @@ import java.util.UUID;
 @Service
 public class AccountServiceImpl implements AccountService{
 
+    private static final int NOW_ROWS_AFFECTED = 0;
+    private static final int UNAUTHORIZED = 0;
+
     private AccountDao accountDao;
 
     private RedisService redisService;
 
-    public AccountServiceImpl(AccountDao accountDao, RedisService redisService) {
+    private StudentService studentService;
+
+    public AccountServiceImpl(AccountDao accountDao,
+                              RedisService redisService,
+                              StudentService studentService) {
         this.accountDao = accountDao;
         this.redisService = redisService;
+        this.studentService = studentService;
     }
 
     @Override
@@ -77,7 +84,8 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Message register(AccountVO accountVO) {
+    @Transactional
+    public Message register(AccountVO accountVO, StudentSignUpVO studentSignUpVO) {
         String userName = accountVO.getUserName();
         String password = accountVO.getPassword();
         Integer role = accountVO.getRole();
@@ -97,12 +105,26 @@ public class AccountServiceImpl implements AccountService{
         }
         String salt = UUID.randomUUID().toString().replaceAll("-", "");
         AccountDO newAccount = new AccountDO();
+
         newAccount.setPassword(MD5Util.formPass2DBPass(password, salt));
         newAccount.setSalt(salt);
         newAccount.setCreateTime(LocalDateTime.now());
         newAccount.setRole(role);
         newAccount.setUserName(userName);
-        if (accountDao.register(newAccount) > 0) {
+        newAccount.setAuthorized(UNAUTHORIZED);
+        switch (Role.getRole(role)) {
+            case STUDENT:
+                Student student = new Student();
+                student.setUserName(userName);
+                student.setName(studentSignUpVO.getStudentName());
+                student.setGender(studentSignUpVO.getStudentSex());
+                studentService.addStudent(student);
+                break;
+            case ADMIN:
+            case STAFF:
+            default:
+        }
+        if (accountDao.register(newAccount) > NOW_ROWS_AFFECTED) {
             return Message.SUCCESS;
         }
         return Message.SERVER_ERROR;

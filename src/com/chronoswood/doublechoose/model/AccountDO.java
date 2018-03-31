@@ -16,6 +16,8 @@ public class AccountDO {
 
     private String salt;
 
+    private Integer authorized;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
