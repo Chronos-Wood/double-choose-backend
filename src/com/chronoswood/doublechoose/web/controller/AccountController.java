@@ -25,11 +25,7 @@ public class AccountController {
     @PostMapping("/signup")
     public Result<Boolean> singnup(@Valid AccountVO accountVO,
                                    @Valid StudentSignUpVO studentVO) {
-        Message message =  accountService.register(accountVO, studentVO);
-        if(message.equals(Message.SUCCESS)) {
-            return Result.success(true);
-        }
-        return Result.error(message);
+        return Result.success(accountService.register(accountVO, studentVO));
     }
 
     @PutMapping("/operation")

@@ -17,7 +17,8 @@ public enum Message {
     USER_EXIST(500205, "账户已注册"),
 
     BIND_ERROR(500300, "参数绑定异常: %s"),
-    BIZ_ERROR(500400, "业务处理异常: %s");
+    BIZ_ERROR(500400, "业务处理异常: %s"),
+    INSERT_ERROR(500500, "数据库异常");
 
     private Integer code;
 

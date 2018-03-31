@@ -11,5 +11,5 @@ public interface AccountService {
 
     AccountDO getUserByToken(String token, HttpServletResponse response);
 //
-    Message register(AccountVO accountVO, StudentSignUpVO studentSignUpVO);
+    boolean register(AccountVO accountVO, StudentSignUpVO studentSignUpVO);
 }

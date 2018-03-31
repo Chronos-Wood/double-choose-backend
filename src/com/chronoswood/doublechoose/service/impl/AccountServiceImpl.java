@@ -22,6 +22,7 @@ public class AccountServiceImpl implements AccountService{
 
     private static final int NOW_ROWS_AFFECTED = 0;
     private static final int UNAUTHORIZED = 0;
+    private static final boolean OPERATION_SUCCESS = true;
 
     private AccountDao accountDao;
 
@@ -85,23 +86,23 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     @Transactional
-    public Message register(AccountVO accountVO, StudentSignUpVO studentSignUpVO) {
+    public boolean register(AccountVO accountVO, StudentSignUpVO studentSignUpVO) {
         String userName = accountVO.getUserName();
         String password = accountVO.getPassword();
         Integer role = accountVO.getRole();
 
         if(userName == null) {
-            return Message.USER_NAME_REQUIRED;
+            throw new BizException( Message.USER_NAME_REQUIRED);
         }
         if (password == null) {
-            return Message.PASSWORD_REQUIRED;
+            throw new BizException( Message.PASSWORD_REQUIRED);
         }
         if (role == null) {
-            return Message.ROLE_REQUIRED;
+            throw new BizException( Message.ROLE_REQUIRED);
         }
         AccountDO account = accountDao.getUserByUsername(userName);
         if (account != null) {
-            return Message.USER_EXIST;
+            throw new BizException( Message.USER_EXIST);
         }
         String salt = UUID.randomUUID().toString().replaceAll("-", "");
         AccountDO newAccount = new AccountDO();
@@ -112,21 +113,25 @@ public class AccountServiceImpl implements AccountService{
         newAccount.setRole(role);
         newAccount.setUserName(userName);
         newAccount.setAuthorized(UNAUTHORIZED);
+        int affectedRows = 0;
         switch (Role.getRole(role)) {
             case STUDENT:
                 Student student = new Student();
                 student.setUserName(userName);
                 student.setName(studentSignUpVO.getStudentName());
                 student.setGender(studentSignUpVO.getStudentSex());
-                studentService.addStudent(student);
+                affectedRows = studentService.addStudent(student);
                 break;
             case ADMIN:
             case STAFF:
             default:
         }
-        if (accountDao.register(newAccount) > NOW_ROWS_AFFECTED) {
-            return Message.SUCCESS;
+        if (affectedRows == 0) {
+            throw new BizException(Message.INSERT_ERROR);
         }
-        return Message.SERVER_ERROR;
+        if (accountDao.register(newAccount) > NOW_ROWS_AFFECTED) {
+            return OPERATION_SUCCESS;
+        }
+        throw new BizException(Message.SERVER_ERROR);
     }
 }
