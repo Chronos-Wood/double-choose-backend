@@ -11,7 +11,10 @@
             ,SET name=#{name}
         </if>
         <if test="gender!=null">
-
+            ,SET gender=#{gender}
+        </if>
+        <if test="photoURL!=null">
+            ,SET photo_url=
         </if>
     </update>
 </mapper>
