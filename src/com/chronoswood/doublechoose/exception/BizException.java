@@ -15,6 +15,10 @@ public class BizException extends RuntimeException {
         this.errMsg = message;
     }
 
+    public BizException(String message) {
+        super(message);
+    }
+
     public BizException(Throwable cause) {
         super(cause);
         this.errMsg = Message.BIZ_ERROR.bindArgs(cause.getMessage());

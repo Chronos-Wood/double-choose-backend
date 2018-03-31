@@ -24,9 +24,9 @@ public class StudentServiceImpl implements StudentService {
         try{
             return studentDao.queryStudentByUsername(userName);
         }catch (Exception e){
-            log.error("",e);
+            log.error("查询学生信息失败",e);
+            throw new BizException("查询学生信息失败");
         }
-        return null;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
             return studentDao.updateStudentInfo(student);
         }catch (Exception e){
             log.error("更新学生信息失败",e);
+            throw new BizException("更新学生信息失败");
         }
-        return 0;
     }
 }
