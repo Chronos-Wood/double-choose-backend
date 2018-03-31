@@ -86,7 +86,9 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     @Transactional
-    public boolean register(AccountVO accountVO, StudentSignUpVO studentSignUpVO) {
+    public boolean register(SignUpVO signUpVO) {
+        AccountVO accountVO = signUpVO.getAccountVO();
+        StudentSignUpVO studentSignUpVO = signUpVO.getStudentSignUpVO();
         String userName = accountVO.getUserName();
         String password = accountVO.getPassword();
         Integer role = accountVO.getRole();

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,17 @@ public class GloableControllerAdvice {
             StringBuilder sb = new StringBuilder("");
             if (errors.size() > 0) {
                 for (ObjectError error: errors) {
+                    sb.append(error.getDefaultMessage());
+                    sb.append("\n");
+                }
+            }
+            return Result.error(Message.BIND_ERROR.bindArgs(sb.toString()));
+        }
+        if (e instanceof MethodArgumentNotValidException) {
+            List<ObjectError> errors = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors();
+            StringBuilder sb = new StringBuilder("");
+            if (errors.size() > 0) {
+                for (ObjectError error : errors) {
                     sb.append(error.getDefaultMessage());
                     sb.append("\n");
                 }
