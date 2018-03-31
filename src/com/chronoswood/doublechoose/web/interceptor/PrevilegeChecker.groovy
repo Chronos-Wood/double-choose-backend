@@ -12,15 +12,17 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.lang.Nullable
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
+import org.springframework.web.servlet.ModelAndView
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Slf4j
 @Component
-class Monitor implements HandlerInterceptor {
+class PrevilegeChecker implements HandlerInterceptor {
 
     @Autowired
     private AccountService accountService
@@ -40,8 +42,6 @@ class Monitor implements HandlerInterceptor {
 
         MDC.put("userName", accountDO.userName)
         MDC.put("role", "$accountDO.role")
-        MDC.put("request", CharStreams.toString(request.reader))
-
         return true
     }
 }

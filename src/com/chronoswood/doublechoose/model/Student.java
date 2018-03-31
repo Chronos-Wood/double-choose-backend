@@ -11,7 +11,7 @@ public class Student {
     private long id = -1;
     private String userName = "";
     private String name = "";
-    private Integer gender = 0;
+    private Integer gender = -1;
     private String photoURL = "";
     private String introduction = "";
     private String interest = "";

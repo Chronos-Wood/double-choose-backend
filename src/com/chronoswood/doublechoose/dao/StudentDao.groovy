@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 @Mapper
 @Repository
 public interface StudentDao {
-    @Select("select * from student where user_naem=#{userName} limit 1")
+    @Select("select * from student where user_name=#{userName} limit 1")
     Student queryStudentByUsername(String userName)
 
     @UpdateProvider(type=UpdateStudentInfo, method='provide')
@@ -27,27 +27,27 @@ class UpdateStudentInfo {
         new SQL(){{
             UPDATE('student')
             if(student.userName?:'' != ''){
-                SET("user_name=$student.userName")
+                SET("user_name='$student.userName'")
             }
-            if(student.gender!=null){
+            if((student.gender?:-1) != (-1)){
                 SET("gender=$student.gender")
             }
             if(student.photoURL?:'' != ''){
-                SET("photo_url=$student.photoURL")
+                SET("photo_url='$student.photoURL'")
             }
             if(student.introduction?:'' != ''){
-                SET("introduction=$student.introduction")
+                SET("introduction='$student.introduction'")
             }
             if(student.interest?:'' != ''){
-                SET("interest=$student.interest")
+                SET("interest='$student.interest'")
             }
             if(student.awards?:'' != ''){
-                SET("awards=$student.awards")
+                SET("awards='$student.awards'")
             }
             if(student.researchDirection?:'' != ''){
-                SET("research_direction=$student.researchDirection")
+                SET("research_direction='$student.researchDirection'")
             }
-            WHERE("user_name=$student.userName")
+            WHERE("user_name='$student.userName'")
         }}.toString()
     }
 }
