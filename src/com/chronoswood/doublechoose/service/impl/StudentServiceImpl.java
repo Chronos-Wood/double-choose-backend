@@ -20,7 +20,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentDao studentDao;
 
     @Override
-    public Student queryStudentByUsername( String userName) {
+    public Student queryStudentByUsername(String userName) {
         if(!Objects.equals(MDC.get("userName"), userName)){
             throw new BizException("无访问权限");
         }

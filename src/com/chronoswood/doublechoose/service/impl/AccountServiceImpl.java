@@ -5,6 +5,7 @@ import com.chronoswood.doublechoose.dao.AccountDao;
 import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.*;
 import com.chronoswood.doublechoose.service.AccountService;
+import com.chronoswood.doublechoose.service.DirectorService;
 import com.chronoswood.doublechoose.service.RedisService;
 import com.chronoswood.doublechoose.service.StudentService;
 import com.chronoswood.doublechoose.util.MD5Util;
@@ -30,12 +31,16 @@ public class AccountServiceImpl implements AccountService{
 
     private StudentService studentService;
 
+    private DirectorService directorService;
+
     public AccountServiceImpl(AccountDao accountDao,
                               RedisService redisService,
-                              StudentService studentService) {
+                              StudentService studentService,
+                              DirectorService directorService) {
         this.accountDao = accountDao;
         this.redisService = redisService;
         this.studentService = studentService;
+        this.directorService = directorService;
     }
 
     @Override
@@ -89,6 +94,7 @@ public class AccountServiceImpl implements AccountService{
     public boolean register(SignUpVO signUpVO) {
         AccountVO accountVO = signUpVO.getAccountVO();
         StudentSignUpVO studentSignUpVO = signUpVO.getStudentSignUpVO();
+        StaffSignUpVO staffSignUpVO = signUpVO.getStaffSignUpVO();
         String userName = accountVO.getUserName();
         String password = accountVO.getPassword();
         Integer role = accountVO.getRole();
@@ -125,7 +131,15 @@ public class AccountServiceImpl implements AccountService{
                 affectedRows = studentService.addStudent(student);
                 break;
             case ADMIN:
+                break;
             case STAFF:
+                Director director = new Director();
+                director.setUserName(userName);
+                director.setName(staffSignUpVO.getStaffName());
+                director.setGender(staffSignUpVO.getStaffSex());
+                director.setCollege(staffSignUpVO.getCollege());
+                director.setTitle(staffSignUpVO.getTitle());
+                affectedRows = directorService.addDirector(director);
             default:
         }
         if (affectedRows == 0) {
