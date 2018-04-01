@@ -9,6 +9,7 @@ import com.chronoswood.doublechoose.service.DirectorService;
 import com.chronoswood.doublechoose.service.RedisService;
 import com.chronoswood.doublechoose.service.StudentService;
 import com.chronoswood.doublechoose.util.MD5Util;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -61,11 +62,33 @@ public class AccountServiceImpl implements AccountService{
         if(!Objects.equals(calcPass, account.getPassword())) {
             throw new BizException(Message.WRONG_PASSWORD);
         }
+        UserCommonVO userCommonVO = null;
+
+        switch (Role.getRole(accountVO.getRole())) {
+            case STUDENT:
+                Student student = studentService.queryStudentByUsername(userName);
+                if (student != null) {
+                    StudentVO studentVO = new StudentVO();
+                    BeanUtils.copyProperties(student, studentVO);
+                    userCommonVO = studentVO;
+                }
+                break;
+            case STAFF:
+                Director director = directorService.queryDirectorByUsername(userName);
+                if (director != null) {
+                    DirectorVO directorVO = new DirectorVO();
+                    BeanUtils.copyProperties(director, directorVO);
+                    userCommonVO = directorVO;
+                }
+                break;
+            default:
+                break;
+        }
         //生成token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
         //生成cookie
         setToken(account, token, response);
-        return new TokenVO(token);
+        return new TokenVO(token, userCommonVO);
     }
 
     @Override
@@ -150,4 +173,5 @@ public class AccountServiceImpl implements AccountService{
         }
         throw new BizException(Message.SERVER_ERROR);
     }
+
 }
