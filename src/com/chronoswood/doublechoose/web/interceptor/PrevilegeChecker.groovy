@@ -42,7 +42,7 @@ class PrevilegeChecker implements HandlerInterceptor {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With,tk");
 
         response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-        if(accountDO==null){
+        if(accountDO == null){
             response.setCharacterEncoding("UTF-8");
             response.writer.print(objectMapper.writeValueAsString(new Result(Message.USER_NOT_EXIST, null)))
             return false

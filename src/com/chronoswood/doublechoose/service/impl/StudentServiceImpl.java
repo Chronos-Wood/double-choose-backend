@@ -60,7 +60,12 @@ public class StudentServiceImpl implements StudentService {
             throw new BizException("无访问权限");
         }
         try{
-            return studentDao.updateStudentInfo(student);
+            int affectedRows =  studentDao.updateStudentInfo(student);
+            if (affectedRows > 0) {
+                //删除缓存
+                redisService.remove(StudentKey.studentKeyPrefix, student.getUserName());
+            }
+            return affectedRows;
         }catch (Exception e){
             log.error("更新学生信息失败",e);
             throw new BizException("更新学生信息失败");

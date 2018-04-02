@@ -114,6 +114,16 @@ public class RedisService {
         }
     }
 
+    public Long remove(KeyPrefix prefix, String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            if (prefix != null && key != null) {
+                String realKey = prefix.getPrefix() + key;
+                return jedis.del(realKey);
+            }
+            return  -1L;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private <T> T string2Bean(String value, Class<T> clazz) {
         if (!StringUtils.hasText(value)) {
