@@ -14,6 +14,7 @@ import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.lang.Nullable
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.ModelAndView
 
@@ -32,10 +33,17 @@ class PrevilegeChecker implements HandlerInterceptor {
     @Override
     boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String token = request.getHeader(AccountKey.TOKEN_NAME)?:"" == ""
+        String token = request.getHeader(AccountKey.TOKEN_NAME)?
+                request.getHeader(AccountKey.TOKEN_NAME): "";
+        Enumeration<String> headers = request.getHeaderNames();
         AccountDO accountDO = accountService.getUserByToken(token, response)
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With,tk");
+
+        response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
         if(accountDO==null){
+            response.setCharacterEncoding("UTF-8");
             response.writer.print(objectMapper.writeValueAsString(new Result(Message.USER_NOT_EXIST, null)))
             return false
         }

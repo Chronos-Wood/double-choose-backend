@@ -5,12 +5,14 @@ import com.chronoswood.doublechoose.model.Student;
 import com.chronoswood.doublechoose.service.StudentService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user/student")
+@CrossOrigin("*")
 public class StudentController {
     @Autowired
     private StudentService studentService;

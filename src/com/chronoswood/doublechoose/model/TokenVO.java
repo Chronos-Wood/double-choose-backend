@@ -1,17 +1,17 @@
 package com.chronoswood.doublechoose.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenVO {
     private String token;
 
-    private UserCommonVO user;
+    private Integer role;
 
-    public TokenVO() {
-    }
-    public TokenVO(String token, UserCommonVO userCommonVO) {
-        this.token = token;
-        this.user = userCommonVO;
-    }
+    private String userName;
+
 }

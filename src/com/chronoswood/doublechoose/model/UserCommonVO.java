@@ -10,4 +10,5 @@ public class UserCommonVO {
 
     private String name;
 
+    private Integer role;
 }

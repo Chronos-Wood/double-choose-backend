@@ -47,6 +47,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public TokenVO login(AccountVO accountVO, HttpServletResponse response) {
         String userName = accountVO.getUserName();
+        Integer role = accountVO.getRole();
 
         if(!StringUtils.hasText(userName)) {
             throw new BizException(Message.USER_NAME_REQUIRED);
@@ -62,33 +63,12 @@ public class AccountServiceImpl implements AccountService{
         if(!Objects.equals(calcPass, account.getPassword())) {
             throw new BizException(Message.WRONG_PASSWORD);
         }
-        UserCommonVO userCommonVO = null;
 
-        switch (Role.getRole(accountVO.getRole())) {
-            case STUDENT:
-                Student student = studentService.queryStudentByUsername(userName);
-                if (student != null) {
-                    StudentVO studentVO = new StudentVO();
-                    BeanUtils.copyProperties(student, studentVO);
-                    userCommonVO = studentVO;
-                }
-                break;
-            case STAFF:
-                Director director = directorService.queryDirectorByUsername(userName);
-                if (director != null) {
-                    DirectorVO directorVO = new DirectorVO();
-                    BeanUtils.copyProperties(director, directorVO);
-                    userCommonVO = directorVO;
-                }
-                break;
-            default:
-                break;
-        }
         //生成token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
         //生成cookie
         setToken(account, token, response);
-        return new TokenVO(token, userCommonVO);
+        return new TokenVO(token, role, userName);
     }
 
     @Override
