@@ -3,7 +3,7 @@ SET NAMES utf8mb4;
 CREATE TABLE project(
   `id` INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `name` VARCHAR(128) DEFAULT '' NOT NULL COMMENT '研究项目名',
-  `preview_iamge` VARCHAR(1024) DEFAULT '' NOT NULL COMMENT '预览图',
+  `preview_image` VARCHAR(1024) DEFAULT '' NOT NULL COMMENT '预览图',
   `description` VARCHAR(128) NOT NULL  DEFAULT '' COMMENT '项目简介',
   `director_id` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT '项目负责人id, 即director表中的主键',
   `period_id` INT UNSIGNED DEFAULT 0 NOT NULL COMMENT '时期ID',
