@@ -63,7 +63,9 @@ public class AccountServiceImpl implements AccountService{
         if(!Objects.equals(calcPass, account.getPassword())) {
             throw new BizException(Message.WRONG_PASSWORD);
         }
-
+        if (account.getAuthorized() == UNAUTHORIZED) {
+            throw new BizException(Message.UNAUTHORIZED_USER);
+        }
         //生成token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
         //生成cookie
