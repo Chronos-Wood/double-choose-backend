@@ -7,10 +7,9 @@ import com.chronoswood.doublechoose.model.Director;
 import com.chronoswood.doublechoose.service.DirectorService;
 import com.chronoswood.doublechoose.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -23,6 +22,11 @@ public class DirectorServiceImpl implements DirectorService {
     public DirectorServiceImpl(DirectorDao directorDao, RedisService redisService) {
         this.directorDao = directorDao;
         this.redisService = redisService;
+    }
+
+    @Override
+    public List<Director> queryDirector(int offset, int amount) {
+        return null;
     }
 
     @Override

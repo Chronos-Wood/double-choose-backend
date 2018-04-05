@@ -16,4 +16,7 @@ interface DirectorDao {
 
     @Select("select * from director where user_name=#{userName} limit 1")
     Director getDirectorByUsername(String userName);
+
+    @Select("select * from director order by name limit #{offset}, #{amount}")
+    List<Director> getDirectors(int offset, int amount);
 }
