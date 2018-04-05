@@ -26,25 +26,25 @@ class UpdateStudentInfo {
     static String provide(Student student){
         new SQL(){{
             UPDATE('student')
-            if(student.userName?:'' != ''){
+            if((student.userName?:'') != ''){
                 SET("user_name='$student.userName'")
             }
             if((student.gender?:-1) != (-1)){
                 SET("gender=$student.gender")
             }
-            if(student.photoURL?:'' != ''){
+            if((student.photoURL?:'') != ''){
                 SET("photo_url='$student.photoURL'")
             }
-            if(student.introduction?:'' != ''){
+            if((student.introduction?:'') != ''){
                 SET("introduction='$student.introduction'")
             }
-            if(student.interest?:'' != ''){
+            if((student.interest?:'') != ''){
                 SET("interest='$student.interest'")
             }
-            if(student.awards?:'' != ''){
+            if((student.awards?:'') != ''){
                 SET("awards='$student.awards'")
             }
-            if(student.researchDirection?:'' != ''){
+            if((student.researchDirection?:'') != ''){
                 SET("research_direction='$student.researchDirection'")
             }
             WHERE("user_name='$student.userName'")

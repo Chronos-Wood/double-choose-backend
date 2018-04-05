@@ -43,7 +43,6 @@ class PrevilegeChecker implements HandlerInterceptor {
 
         response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
         if(accountDO == null){
-            response.setCharacterEncoding("UTF-8");
             response.writer.print(objectMapper.writeValueAsString(new Result(Message.SESSION_EXPIRED, null)))
             return false
         }

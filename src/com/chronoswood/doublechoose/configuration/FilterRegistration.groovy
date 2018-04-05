@@ -1,31 +1,36 @@
-package com.chronoswood.doublechoose.web;
-import org.slf4j.Logger;
+package com.chronoswood.doublechoose.configuration
+
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.ContentCachingResponseWrapper;
+import org.springframework.core.annotation.Order
+import org.springframework.web.filter.CharacterEncodingFilter
+import org.springframework.web.filter.GenericFilterBean
+import org.springframework.web.util.ContentCachingRequestWrapper
+import org.springframework.web.util.ContentCachingResponseWrapper
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
-@Component
-class CachedFilterRegistry extends FilterRegistrationBean{
-    CachedFilterRegistry() {
-        setFilter(new CachedFilter())
-        addUrlPatterns('/*')
+@Configuration
+class FilterRegistration
+{
+    @Bean
+    @Order(1)
+    FilterRegistrationBean getRequestCachingFilter(){
+        return new FilterRegistrationBean(){{
+            setFilter(new CachedFilter())
+            addUrlPatterns('/*')
+        }}
     }
 }
-
 class CachedFilter extends GenericFilterBean {
     private static final Logger PARAMS_LOGGER = LoggerFactory.getLogger("params")
 
