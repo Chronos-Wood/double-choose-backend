@@ -4,6 +4,8 @@ import com.chronoswood.doublechoose.model.Director
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.UpdateProvider
+import org.apache.ibatis.jdbc.SQL
 import org.springframework.stereotype.Repository
 
 @Mapper
@@ -19,4 +21,45 @@ interface DirectorDao {
 
     @Select("select * from director order by name limit #{offset}, #{amount}")
     List<Director> getDirectors(int offset, int amount);
+
+    @UpdateProvider(type=UpdateDirectorInfo, method='provide')
+    int updateDirector(Director director)
+}
+class UpdateDirectorInfo{
+    def provide(Director director){
+        return new SQL(){{
+            UPDATE('director')
+            if((director.gender?:-1)!=-1){
+                SET("gender=$director.gender")
+            }
+            if((director.name?:'')!=''){
+                SET("name=$director.name")
+            }
+            if((director.photoURL?:'')!=''){
+                SET("photho_url=$director.photoURL")
+            }
+            if((director.introduction?:'')!=''){
+                SET("introduction=$director.introduction")
+            }
+            if((director.awards?:'')!=''){
+                SET("awards=$director.awards")
+            }
+            if((director.researchDirection?:'')!=''){
+                SET("research_direction=$director.researchDirection")
+            }
+            if((director.college?:'')!=''){
+                SET("college=$director.college")
+            }
+            if((director.tel?:'')!=''){
+                SET("tel=$director.tel")
+            }
+            if((director.email?:'')!=''){
+                SET("email=$director.email")
+            }
+            if((director.title?:'')!=''){
+                SET("title=$director.title")
+            }
+            WHERE("user_name=$director.userName")
+        }}.toString()
+    }
 }
