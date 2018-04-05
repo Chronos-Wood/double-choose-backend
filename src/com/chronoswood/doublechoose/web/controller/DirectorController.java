@@ -1,6 +1,7 @@
 package com.chronoswood.doublechoose.web.controller;
 
 
+import com.chronoswood.doublechoose.model.Director;
 import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
 import com.chronoswood.doublechoose.service.DirectorService;
@@ -21,6 +22,12 @@ public class DirectorController {
             return new Result<>(Message.BIND_ERROR, null);
         }
         return new Result<>(Message.SUCCESS, directorService.queryDirector(offset, amount));
+    }
+
+    @PostMapping("update")
+    public Result<?> list(Director director){
+        directorService.updateDirectorInfo(director);
+        return new Result<>(Message.SUCCESS, null);
     }
 
 }

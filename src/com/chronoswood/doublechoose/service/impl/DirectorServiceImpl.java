@@ -25,8 +25,23 @@ public class DirectorServiceImpl implements DirectorService {
     }
 
     @Override
+    public int updateDirectorInfo(Director director) {
+        try{
+            return directorDao.updateDirector(director);
+        }catch (Exception e){
+            log.error("更新导师信息失败",e);
+            throw new BizException("更新导师信息失败");
+        }
+    }
+
+    @Override
     public List<Director> queryDirector(int offset, int amount) {
-        return null;
+        try{
+            return directorDao.getDirectors(offset, amount);
+        }catch (Exception e){
+            log.error("查询导师列表失败",e);
+            throw new BizException("查询导师列表失败");
+        }
     }
 
     @Override
