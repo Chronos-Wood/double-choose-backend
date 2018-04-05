@@ -3,6 +3,7 @@ package com.chronoswood.doublechoose.dao
 import com.chronoswood.doublechoose.model.Director
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.UpdateProvider
 import org.apache.ibatis.jdbc.SQL
@@ -20,13 +21,13 @@ interface DirectorDao {
     Director getDirectorByUsername(String userName);
 
     @Select("select * from director order by name limit #{offset}, #{amount}")
-    List<Director> getDirectors(int offset, int amount);
+    List<Director> getDirectors(@Param('offset') int offset,@Param('amount') int amount);
 
     @UpdateProvider(type=UpdateDirectorInfo, method='provide')
     int updateDirector(Director director)
 }
 class UpdateDirectorInfo{
-    def static provide(Director director){
+    String provide(Director director){
         return new SQL(){{
             UPDATE('director')
             if((director.gender?:-1)!=-1){
