@@ -26,7 +26,7 @@ interface DirectorDao {
     int updateDirector(Director director)
 }
 class UpdateDirectorInfo{
-    def provide(Director director){
+    def static provide(Director director){
         return new SQL(){{
             UPDATE('director')
             if((director.gender?:-1)!=-1){
