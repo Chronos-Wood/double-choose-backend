@@ -2,7 +2,8 @@ package com.chronoswood.doublechoose.dao;
 
 import com.chronoswood.doublechoose.model.Student
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.jdbc.SQL;
@@ -20,6 +21,9 @@ public interface StudentDao {
 
     @Insert("insert into student(user_name, name, gender) values(#{userName}, #{name}, #{gender})")
     int addStudent(Student student);
+
+    @Select("select * from director order by name limit #{offset}, #{amount}")
+    List<Student> listStudents(@Param("offset") int offset, @Param("amount") int amount);
 }
 
 class UpdateStudentInfo {

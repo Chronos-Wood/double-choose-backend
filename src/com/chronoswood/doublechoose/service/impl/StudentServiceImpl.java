@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -69,6 +70,16 @@ public class StudentServiceImpl implements StudentService {
         }catch (Exception e){
             log.error("更新学生信息失败",e);
             throw new BizException("更新学生信息失败");
+        }
+    }
+
+    @Override
+    public List<Student> listStudents(int offset, int amount) {
+        try{
+            return studentDao.listStudents(offset, amount);
+        }catch (Exception e){
+            log.error("查询导师列表失败",e);
+            throw new BizException("查询导师列表失败");
         }
     }
 }

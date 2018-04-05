@@ -25,9 +25,12 @@ public class DirectorController {
     }
 
     @PostMapping("update")
-    public Result<?> list(Director director){
+    public Result<?> update(Director director){
         directorService.updateDirectorInfo(director);
         return new Result<>(Message.SUCCESS, null);
     }
-
+    @RequestMapping(path = "/detail")
+    public Result detail(String userName){
+        return Result.success(directorService.queryDirectorByUsername(userName));
+    }
 }

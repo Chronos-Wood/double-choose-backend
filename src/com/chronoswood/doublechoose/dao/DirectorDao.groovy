@@ -31,36 +31,36 @@ class UpdateDirectorInfo{
         return new SQL(){{
             UPDATE('director')
             if((director.gender?:-1)!=-1){
-                SET("gender=$director.gender")
+                SET("gender='$director.gender'")
             }
             if((director.name?:'')!=''){
-                SET("name=$director.name")
+                SET("name='$director.name'")
             }
             if((director.photoURL?:'')!=''){
-                SET("photho_url=$director.photoURL")
+                SET("photho_url='$director.photoURL'")
             }
             if((director.introduction?:'')!=''){
-                SET("introduction=$director.introduction")
+                SET("introduction='$director.introduction'")
             }
             if((director.awards?:'')!=''){
-                SET("awards=$director.awards")
+                SET("awards='$director.awards'")
             }
             if((director.researchDirection?:'')!=''){
-                SET("research_direction=$director.researchDirection")
+                SET("research_direction='$director.researchDirection'")
             }
             if((director.college?:'')!=''){
-                SET("college=$director.college")
+                SET("college='$director.college'")
             }
             if((director.tel?:'')!=''){
-                SET("tel=$director.tel")
+                SET("tel='$director.tel'")
             }
             if((director.email?:'')!=''){
-                SET("email=$director.email")
+                SET("email='$director.email'")
             }
             if((director.title?:'')!=''){
-                SET("title=$director.title")
+                SET("title='$director.title'")
             }
-            WHERE("user_name=$director.userName")
+            WHERE("user_name='$director.userName'")
         }}.toString()
     }
 }

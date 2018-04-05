@@ -2,6 +2,8 @@ package com.chronoswood.doublechoose.service;
 
 import com.chronoswood.doublechoose.model.Student;
 
+import java.util.List;
+
 public interface StudentService {
     /**
      * 通过账号名查询学生详细信息
@@ -22,4 +24,7 @@ public interface StudentService {
      * @return 受影响的行数
      */
     int updateStudent(Student student);
+
+
+    List<Student> listStudents(int offset, int amount);
 }

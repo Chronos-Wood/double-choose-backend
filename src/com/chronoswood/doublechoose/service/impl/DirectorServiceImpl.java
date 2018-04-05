@@ -27,7 +27,12 @@ public class DirectorServiceImpl implements DirectorService {
     @Override
     public int updateDirectorInfo(Director director) {
         try{
-            return directorDao.updateDirector(director);
+            int affectedRows =   directorDao.updateDirector(director);
+            if (affectedRows > 0) {
+                //删除缓存
+                redisService.remove(DirectorKey.directorKeyPrefix, director.getUserName());
+            }
+            return affectedRows;
         }catch (Exception e){
             log.error("更新导师信息失败",e);
             throw new BizException("更新导师信息失败");
