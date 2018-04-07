@@ -14,6 +14,7 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -72,16 +73,26 @@ public class ProjectsServiceImpl implements ProjectsService {
         }
     }
 
+    @Override
+    public List<Project> queryProjectByDirectorUserName(String directorUserName, int offset, int amount) {
+        try{
+            return projectsDao.queryProjectsByDirectorUserName(directorUserName, offset, amount);
+        }catch (Exception e){
+            log.error("查询项目信息失败",e);
+            throw new BizException("查询项目信息失败");
+        }
+    }
+
     //Show the list of professor
-    public Projects showProjects() {
+    public Projects showProjects(int offset, int amount) {
         Projects result = null;
         try{
             //先查缓存
-            result = redisService.get(ProjectKey.projectKeyPrefix, "projects", Projects.class);
+            result = redisService.get(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), Projects.class);
             if (result != null) {
                 return result;
             }
-            result = projectsDao.queryProjects();
+            result = projectsDao.queryProjects(offset, amount);
         }catch (Exception e){
             log.error("显示项目信息失败",e);
             throw new BizException("显示项目信息失败");
@@ -90,7 +101,7 @@ public class ProjectsServiceImpl implements ProjectsService {
             throw new BizException("无法查询到项目相关信息");
         }
         //入缓存
-        redisService.set(StudentKey.studentKeyPrefix, "projects", result);
+        redisService.set(StudentKey.studentKeyPrefix, String.format("projects:%d:%d", offset, amount), result);
         return result;
     }
     //Show the information of project

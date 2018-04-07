@@ -3,6 +3,8 @@ package com.chronoswood.doublechoose.service;
 import com.chronoswood.doublechoose.model.Projects;
 import com.chronoswood.doublechoose.model.Project;
 
+import java.util.List;
+
 public interface ProjectsService {
     /**
      * 返回项目的详细信息
@@ -14,9 +16,10 @@ public interface ProjectsService {
     /**
      * 返回所有项目信息
      * @param
-     * @return null如果查询不到相关信息，否则返回Projects实例
+     * @param offset
+     *@param amount @return null如果查询不到相关信息，否则返回Projects实例
      */
-    Projects showProjects();
+    Projects showProjects(int offset, int amount);
 
     /**
      * 插入项目
@@ -30,4 +33,7 @@ public interface ProjectsService {
      * @return 受影响的行数
      */
     int updateProject(Project project);
+
+    List<Project> queryProjectByDirectorUserName(String directorUserName, int offset, int amount);
+
 }

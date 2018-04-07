@@ -17,6 +17,7 @@ public enum Message {
     WRONG_PASSWORD(500204, "密码错误"),
     USER_EXIST(500205, "账户已注册"),
     UNAUTHORIZED_USER(500206, "账户未审核，请稍后再试"),
+    NO_PERMISSION(500207, "无访问权限"),
 
     BIND_ERROR(500300, "参数绑定异常: %s"),
     BIZ_ERROR(500400, "业务处理异常: %s"),

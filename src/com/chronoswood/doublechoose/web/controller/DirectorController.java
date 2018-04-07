@@ -1,10 +1,13 @@
 package com.chronoswood.doublechoose.web.controller;
 
 
+import com.chronoswood.doublechoose.exception.BizException;
+import com.chronoswood.doublechoose.model.AccountVO;
 import com.chronoswood.doublechoose.model.Director;
 import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
 import com.chronoswood.doublechoose.service.DirectorService;
+import com.google.common.base.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,11 @@ public class DirectorController {
     }
 
     @PostMapping("update")
-    public Result<?> update(Director director){
+    public Result<?> update(AccountVO accountVO, Director director){
+        if(!Objects.equal(accountVO.getUserName(), director.getUserName())){
+            throw new BizException(Message.USER_NOT_EXIST);
+        }
+
         directorService.updateDirectorInfo(director);
         return new Result<>(Message.SUCCESS, null);
     }

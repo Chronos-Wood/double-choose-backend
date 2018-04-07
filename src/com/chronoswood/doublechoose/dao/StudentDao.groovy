@@ -1,14 +1,13 @@
 package com.chronoswood.doublechoose.dao;
 
-import com.chronoswood.doublechoose.model.Student
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param;
+import com.chronoswood.doublechoose.model.Student;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 @Mapper
 @Repository
