@@ -1,11 +1,15 @@
 package com.chronoswood.doublechoose.service.impl;
 
 import com.chronoswood.doublechoose.cache.key.StudentKey;
+import com.chronoswood.doublechoose.cache.key.ProjectKey;
 import com.chronoswood.doublechoose.dao.StudentDao;
+import com.chronoswood.doublechoose.dao.ProjectsDao;
 import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.Student;
+import com.chronoswood.doublechoose.model.Projects;
 import com.chronoswood.doublechoose.service.RedisService;
 import com.chronoswood.doublechoose.service.StudentService;
+
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -24,6 +28,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private ProjectsDao projectsDao;
+
 
     @Override
     public Student queryStudentByUsername(String userName) {
