@@ -44,7 +44,7 @@ public class WillController {
 
     @PostMapping("/accept")
     @SuppressWarnings("unchecked")
-    public Result accept(AccountVO accountVO, @RequestBody AcceptingWillsRequest acceptingWillsRequest{
+    public Result accept(AccountVO accountVO, @RequestBody AcceptingWillsRequest acceptingWillsRequest){
         if(accountVO.getRole() != Role.STAFF.getCode()){
             throw new BizException(Message.NO_PERMISSION);
         }
