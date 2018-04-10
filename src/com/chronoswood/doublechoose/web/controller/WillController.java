@@ -1,10 +1,7 @@
 package com.chronoswood.doublechoose.web.controller;
 
 import com.chronoswood.doublechoose.exception.BizException;
-import com.chronoswood.doublechoose.model.AccountVO;
-import com.chronoswood.doublechoose.model.Message;
-import com.chronoswood.doublechoose.model.Result;
-import com.chronoswood.doublechoose.model.Role;
+import com.chronoswood.doublechoose.model.*;
 import com.chronoswood.doublechoose.service.WillService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +35,20 @@ public class WillController {
 
     @SuppressWarnings("unchecked")
     @PostMapping("/choose")
-    public Result choose(AccountVO accountVO, @RequestBody List<String> projectIds){
+    public Result choose(AccountVO accountVO, @RequestBody ChoosingProjectRequest request){
         if(accountVO.getRole() != Role.STUDENT.getCode()){
             throw new BizException(Message.NO_PERMISSION);
         }
-        return new Result<>(Message.SUCCESS, willService.submitWills(accountVO.getUserName(), Optional.ofNullable(projectIds).orElse(Collections.EMPTY_LIST)));
+        return new Result<>(Message.SUCCESS, willService.submitWills(accountVO.getUserName(), Optional.ofNullable(request.getProjectIds()).orElse(Collections.EMPTY_LIST)));
     }
 
     @PostMapping("/accept")
     @SuppressWarnings("unchecked")
-    public Result accept(AccountVO accountVO, @RequestBody List<String> willIds){
+    public Result accept(AccountVO accountVO, @RequestBody AcceptingWillsRequest acceptingWillsRequest){
         if(accountVO.getRole() != Role.STAFF.getCode()){
             throw new BizException(Message.NO_PERMISSION);
         }
-        return new Result<>(Message.SUCCESS, willService.acceptWills(accountVO.getUserName(), Optional.ofNullable(willIds).orElse(Collections.EMPTY_LIST)));
+        return new Result<>(Message.SUCCESS, willService.acceptWills(accountVO.getUserName(), Optional.ofNullable(acceptingWillsRequest.getWillIds()).orElse(Collections.EMPTY_LIST)));
     }
 
 
