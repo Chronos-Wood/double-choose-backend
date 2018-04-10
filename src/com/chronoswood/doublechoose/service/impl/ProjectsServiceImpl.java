@@ -6,6 +6,7 @@ import com.chronoswood.doublechoose.dao.ProjectsDao;
 import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.Project;
 import com.chronoswood.doublechoose.model.Projects;
+import com.chronoswood.doublechoose.service.PeriodService;
 import com.chronoswood.doublechoose.service.ProjectsService;
 import com.chronoswood.doublechoose.service.RedisService;
 
@@ -26,6 +27,9 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Autowired
     private ProjectsDao projectsDao;
+
+    @Autowired
+    private PeriodService periodService;
 
     @Override
     public Project queryProjectByName(String Name) {

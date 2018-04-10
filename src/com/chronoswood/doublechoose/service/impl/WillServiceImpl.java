@@ -4,7 +4,9 @@ import com.chronoswood.doublechoose.dao.PeriodDao;
 import com.chronoswood.doublechoose.dao.WillDao;
 import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.Period;
+import com.chronoswood.doublechoose.model.PeriodType;
 import com.chronoswood.doublechoose.model.Will;
+import com.chronoswood.doublechoose.service.PeriodService;
 import com.chronoswood.doublechoose.service.WillService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +21,17 @@ public class WillServiceImpl implements WillService {
     @Autowired
     private WillDao willDao;
     @Autowired
-    private PeriodDao periodDao;
+    private PeriodService periodService;
 
     @Override
     public int submitWills(@NonNull String studentUserName,@NonNull List<String> projectIds) {
         try{
-            Period period = periodDao.queryLatestPeriod();
-            if(period==null){
+            Period period = periodService.getLatestPeriod();
+            if(period==null || period.getType()!= PeriodType.CHOOSE_PROJECT.getCode()){
                 throw new BizException("不在可以提交志愿的时间内");
+            }
+            if(projectIds.size()!=3){
+                throw new BizException("非法的志愿数量");
             }
             return willDao.storeWill(studentUserName, String.valueOf(period.getId()), projectIds);
         }catch (Exception e){
@@ -48,6 +53,11 @@ public class WillServiceImpl implements WillService {
     @Override
     public int acceptWills(String directorUserName, List<String> willIds) {
         try{
+            Period period = periodService.getLatestPeriod();
+            if(period==null || period.getType()!=PeriodType.CHOOSE_STUDENT.getCode()){
+                throw new BizException("不在可以接受志愿的时间内");
+            }
+
             return willDao.acceptWill(directorUserName, willIds);
         }catch (Exception e){
             log.error("接受志愿失败",e);
