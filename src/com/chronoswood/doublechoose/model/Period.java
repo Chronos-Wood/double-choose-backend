@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Period {
     private long id;
     private String description;
+    private int type;
     private LocalDateTime begin;
     private LocalDateTime end;
     private LocalDateTime create_time;
