@@ -9,6 +9,8 @@ import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class RedisService {
@@ -34,6 +36,16 @@ public class RedisService {
                 String realKey = prefix.getPrefix() + key;
                 String value = jedis.get(realKey);
                 return string2Bean(value, clazz);
+            }
+            return null;
+        }
+    }
+    public <T> List<T> getList(KeyPrefix prefix, String key, Class<T> clazz) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            if(prefix != null) {
+                String realKey = prefix.getPrefix() + key;
+                String value = jedis.get(realKey);
+                return string2List(value, clazz);
             }
             return null;
         }
@@ -124,6 +136,12 @@ public class RedisService {
         }
     }
 
+    private <T> List<T> string2List(String value, Class<T> clazz) {
+        if (!StringUtils.hasText(value)) {
+            return null;
+        }
+        return JSON.parseArray(value, clazz);
+    }
     @SuppressWarnings("unchecked")
     private <T> T string2Bean(String value, Class<T> clazz) {
         if (!StringUtils.hasText(value)) {
