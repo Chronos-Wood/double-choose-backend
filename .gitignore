@@ -39,6 +39,7 @@ Thumbs.db
 
 #gradle ignore
 /.grandle
+.gradle/
 
 
 catalina.base_IS_UNDEFINED/

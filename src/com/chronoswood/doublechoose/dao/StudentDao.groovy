@@ -21,7 +21,7 @@ public interface StudentDao {
     @Insert("insert into student(user_name, name, gender) values(#{userName}, #{name}, #{gender})")
     int addStudent(Student student);
 
-    @Select("select * from director order by name limit #{offset}, #{amount}")
+    @Select("select * from student order by name limit #{offset}, #{amount}")
     List<Student> listStudents(@Param("offset") int offset, @Param("amount") int amount);
 }
 
