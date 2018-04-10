@@ -88,14 +88,14 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     //Show the list of professor
-    public Projects showProjects(int offset, int amount) {
-        Projects result = null;
+    public List<Project> showProjects(int offset, int amount) {
+        List<Project> result = null;
         try{
             //先查缓存
-            result = redisService.get(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), Projects.class);
-            if (result != null) {
-                return result;
-            }
+//            result = redisService.get(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), List<Project>.class);
+//            if (result != null) {
+//                return result;
+//            }
             result = projectsDao.queryProjects(offset, amount);
         }catch (Exception e){
             log.error("显示项目信息失败",e);

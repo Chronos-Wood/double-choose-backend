@@ -19,7 +19,7 @@ public interface ProjectsService {
      * @param offset
      *@param amount @return null如果查询不到相关信息，否则返回Projects实例
      */
-    Projects showProjects(int offset, int amount);
+    List<Project> showProjects(int offset, int amount);
 
     /**
      * 插入项目

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface ProjectsDao {
     @Select('select * from project limit #{offset}, #{amount}')
-    Projects queryProjects(@Param('offset') int offset, @Param('amount') int amount)
+    List<Project> queryProjects(@Param('offset') int offset, @Param('amount') int amount)
 
     @Select("select * from project where name=#{Name} limit 1")
     Project queryProjectByName(String Name)
