@@ -21,4 +21,5 @@ public class Will {
     private String createTime;
     private String updateTime;
     private Boolean accepted;
+    private int precedence;
 }

@@ -25,7 +25,8 @@ SELECT
   project.end as projectEndTime,
   project.create_time as createTime,
   project.update_time as updateTime,
-  will.accepted as accepted
+  will.accepted as accepted,
+  will.precedence as precedence
 FROM will
   JOIN project ON project.id=will.project_id
   JOIN period ON (will.period_id=period.id and NOW() >= period.begin and NOW() <= period.end)
@@ -57,13 +58,14 @@ SELECT
   project.end as projectEndTime,
   project.create_time as createTime,
   project.update_time as updateTime,
-  will.accepted as accepted
+  will.accepted as accepted,
+  will.precedence as precedence
 FROM will
   JOIN project ON project.id=will.project_id
   JOIN period ON (will.period_id=period.id and NOW() >= period.begin and NOW() <= period.end)
   JOIN student ON (student.id = will.student_id AND student.user_name = #{studentUserName})
   JOIN director ON project.director_id = director.id
-ORDER BY will.update_time limit 3;
+ORDER BY (will.precedence, will.update_time) limit 3;
 ''')
     List<Will> queryWillsByStudentUserName(@Param('studentUserName') String studentUserName);
 
@@ -83,18 +85,19 @@ SELECT
   project.end as projectEndTime,
   project.create_time as createTime,
   project.update_time as updateTime,
-  will.accepted as accepted
+  will.accepted as accepted,
+  will.precedence as precedence
 FROM will
   JOIN project ON project.id=will.project_id
   JOIN period ON (will.period_id=period.id and NOW() >= period.begin and NOW() <= period.end)
   JOIN student ON (student.id = will.student_id AND student.user_name = #{studentUserName})
   JOIN director ON project.director_id = director.id
 WHERE will.accepted=1
-ORDER BY will.update_time limit 3;
+ORDER BY (will.precedence, will.update_time) limit 3;
 ''')
     List<Will> queryAcceptedWillsByStudentUserName(@Param('studentUserName') String studentUserName);
 
-    int storeWill(@Param('studentUserName') String studentUserName, @Param('periodId') String periodId, @Param('projectIds') List<String> projectIds)
+    int storeWill(List<Will> wills)
 
     int acceptWill(@Param('directorUserName') String directorUserName, @Param('willIds') List<String> willIds)
 
