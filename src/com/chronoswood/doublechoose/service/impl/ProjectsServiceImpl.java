@@ -6,6 +6,7 @@ import com.chronoswood.doublechoose.dao.ProjectsDao;
 import com.chronoswood.doublechoose.exception.BizException;
 import com.chronoswood.doublechoose.model.Project;
 import com.chronoswood.doublechoose.model.Projects;
+import com.chronoswood.doublechoose.service.DirectorService;
 import com.chronoswood.doublechoose.service.PeriodService;
 import com.chronoswood.doublechoose.service.ProjectsService;
 import com.chronoswood.doublechoose.service.RedisService;
@@ -30,6 +31,9 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Autowired
     private PeriodService periodService;
+
+    @Autowired
+    private DirectorService directorService;
 
     @Override
     public Project queryProjectByName(String Name) {
@@ -88,24 +92,25 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     //Show the list of professor
-    public List<Project> showProjects(int offset, int amount) {
-        List<Project> result = null;
+    public List<Projects> showProjects(int offset, int amount) {
+        List<Projects> result = null;
         try{
             //先查缓存
-//            result = redisService.get(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), List<Project>.class);
-//            if (result != null) {
-//                return result;
-//            }
+            result = redisService.getList(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), Projects.class);
+            if (result != null) {
+                return result;
+            }
             result = projectsDao.queryProjects(offset, amount);
         }catch (Exception e){
             log.error("显示项目信息失败",e);
             throw new BizException("显示项目信息失败");
         }
-        if(result==null){
+        if(result == null){
             throw new BizException("无法查询到项目相关信息");
         }
+
         //入缓存
-        redisService.set(StudentKey.studentKeyPrefix, String.format("projects:%d:%d", offset, amount), result);
+        redisService.set(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), result);
         return result;
     }
     //Show the information of project

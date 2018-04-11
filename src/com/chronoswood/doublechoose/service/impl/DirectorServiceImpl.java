@@ -76,4 +76,27 @@ public class DirectorServiceImpl implements DirectorService {
         redisService.set(DirectorKey.directorKeyPrefix, userName, result);
         return result;
     }
+
+    @Override
+    public Director getDirectorById(Integer id) {
+        Director result = null;
+        if (id == null) return null;
+        try{
+            //先查缓存
+            result = redisService.get(DirectorKey.directorKeyPrefix, id.toString(), Director.class);
+            if (result != null) {
+                return result;
+            }
+            result = directorDao.getDirectorById(id);
+        }catch (Exception e){
+            log.error("查询教员信息失败",e);
+            throw new BizException("查询教员信息失败");
+        }
+        if(result == null){
+            throw new BizException("无法查询到相关教员信息");
+        }
+        //入缓存
+        redisService.set(DirectorKey.directorKeyPrefix, id.toString(), result);
+        return result;
+    }
 }

@@ -3,6 +3,7 @@ package com.chronoswood.doublechoose.dao
 import com.chronoswood.doublechoose.model.Director
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.One
 import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
 import org.apache.ibatis.annotations.UpdateProvider
@@ -25,6 +26,9 @@ interface DirectorDao {
 
     @UpdateProvider(type=UpdateDirectorInfo, method='provide')
     int updateDirector(Director director)
+
+    @Select("select * from director where id = #{id} limit 1")
+    Director getDirectorById(Integer id);
 }
 class UpdateDirectorInfo{
     String provide(Director director){

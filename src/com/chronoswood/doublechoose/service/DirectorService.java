@@ -9,4 +9,5 @@ public interface DirectorService {
     List<Director> queryDirector(int offset, int amount);
     int addDirector(Director director);
     Director queryDirectorByUsername(String userName);
+    Director getDirectorById(Integer id);
 }
