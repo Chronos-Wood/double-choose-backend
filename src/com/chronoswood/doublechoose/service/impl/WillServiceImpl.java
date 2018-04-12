@@ -35,7 +35,7 @@ public class WillServiceImpl implements WillService {
         try{
             Period period = periodService.getLatestPeriod();
             Student student = studentService.queryStudentByUsername(studentUserName);
-            if(period==null || period.getType()!= PeriodType.CHOOSE_PROJECT.getCode()){
+            if(period == null || period.getType()!= PeriodType.CHOOSE_PROJECT.getCode()){
                 throw new BizException("不在可以提交志愿的时间内");
             }
             if(projectIds.size()!=3){
@@ -43,12 +43,13 @@ public class WillServiceImpl implements WillService {
             }
 
             val wills = new ArrayList<Will>(3);
-            for(int i=1; i<=3; i++){
+            for(int i=0; i<3; i++){
                 val will = new Will();
-                will.setPrecedence(i);
+                will.setPrecedence(i + 1);
                 will.setStudentId(String.valueOf(student.getId()));
                 will.setStudentName(studentUserName);
-                will.setPeriodId(projectIds.get(i));
+                will.setProjectId(projectIds.get(i));
+                will.setPeriodId(period.getId() + "");
                 wills.add(will);
             }
 

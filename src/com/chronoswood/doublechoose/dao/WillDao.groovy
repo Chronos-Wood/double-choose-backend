@@ -97,7 +97,7 @@ ORDER BY (will.precedence, will.update_time) limit 3;
 ''')
     List<Will> queryAcceptedWillsByStudentUserName(@Param('studentUserName') String studentUserName);
 
-    int storeWill(List<Will> wills)
+    int storeWill(@Param("wills")List<Will> wills)
 
     int acceptWill(@Param('directorUserName') String directorUserName, @Param('willIds') List<String> willIds)
 

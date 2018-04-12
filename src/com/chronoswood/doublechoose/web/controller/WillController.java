@@ -35,7 +35,8 @@ public class WillController {
 
     @SuppressWarnings("unchecked")
     @PostMapping("/choose")
-    public Result choose(AccountVO accountVO, @RequestBody ChoosingProjectRequest request){
+    public Result choose(@RequestBody ChoosingProjectRequest request){
+        AccountVO accountVO = request.getAccountVO();
         if(accountVO.getRole() != Role.STUDENT.getCode()){
             throw new BizException(Message.NO_PERMISSION);
         }

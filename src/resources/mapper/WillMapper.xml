@@ -6,10 +6,10 @@
         INSERT INTO will(`student_id`, `project_id`, `period_id`, `precedence`) VALUES
             <foreach collection="wills" item="will" separator=",">
                 (
-                #{studentId},
-                #{projectId},
-                #{periodId},
-                #{precedence}
+                #{will.studentId},
+                #{will.projectId},
+                #{will.periodId},
+                #{will.precedence}
                 )
             </foreach>
     </insert>

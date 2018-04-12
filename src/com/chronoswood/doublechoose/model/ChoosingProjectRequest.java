@@ -9,4 +9,6 @@ import java.util.List;
 public class ChoosingProjectRequest {
     @SuppressWarnings("unchecked")
     List<String> projectIds = Collections.EMPTY_LIST;
+
+    AccountVO accountVO;
 }
