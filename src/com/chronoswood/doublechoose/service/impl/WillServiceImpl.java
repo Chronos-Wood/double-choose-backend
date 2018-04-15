@@ -1,21 +1,18 @@
 package com.chronoswood.doublechoose.service.impl;
 
 import com.chronoswood.doublechoose.dao.PeriodDao;
+import com.chronoswood.doublechoose.dao.ProjectsDao;
 import com.chronoswood.doublechoose.dao.WillDao;
 import com.chronoswood.doublechoose.exception.BizException;
-import com.chronoswood.doublechoose.model.Period;
-import com.chronoswood.doublechoose.model.PeriodType;
-import com.chronoswood.doublechoose.model.Student;
-import com.chronoswood.doublechoose.model.Will;
-import com.chronoswood.doublechoose.service.DirectorService;
-import com.chronoswood.doublechoose.service.PeriodService;
-import com.chronoswood.doublechoose.service.StudentService;
-import com.chronoswood.doublechoose.service.WillService;
+import com.chronoswood.doublechoose.model.*;
+import com.chronoswood.doublechoose.service.*;
+import com.google.common.collect.Sets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +26,22 @@ public class WillServiceImpl implements WillService {
     private PeriodService periodService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ProjectsDao projectDao;
 
     @Override
     public int submitWills(@NonNull String studentUserName,@NonNull List<String> projectIds) {
-        try{
-            Period period = periodService.getLatestPeriod();
-            Student student = studentService.queryStudentByUsername(studentUserName);
-            if(period==null || period.getType()!= PeriodType.CHOOSE_PROJECT.getCode()){
-                throw new BizException("不在可以提交志愿的时间内");
-            }
-            if(projectIds.size()!=3){
-                throw new BizException("非法的志愿数量");
-            }
 
+        Period period = periodService.getLatestPeriod();
+        Student student = studentService.queryStudentByUsername(studentUserName);
+        if(period==null || period.getType()!= PeriodType.CHOOSE_PROJECT.getCode()){
+            throw new BizException("不在可以提交志愿的时间内");
+        }
+        if(projectIds.size()!=3){
+            throw new BizException("非法的志愿数量");
+        }
+
+        try{
             val wills = new ArrayList<Will>(3);
             for(int i=1; i<=3; i++){
                 val will = new Will();
@@ -70,18 +70,44 @@ public class WillServiceImpl implements WillService {
     }
 
     @Override
-    public int acceptWills(String directorUserName, List<String> willIds) {
+    @Transactional
+    public int acceptWills(@NonNull String directorUserName,@NonNull List<String> willIds) {
+
+        Period period = periodService.getLatestPeriod();
+        if(period==null || period.getType()!=PeriodType.CHOOSE_STUDENT.getCode()){
+            throw new BizException("不在可以接受志愿的时间内");
+        }
+
+        if(Sets.newHashSet(willIds).size()>1){
+            throw new BizException("一次只能操作一个课题");
+        }
+
         try{
-            Period period = periodService.getLatestPeriod();
-            if(period==null || period.getType()!=PeriodType.CHOOSE_STUDENT.getCode()){
-                throw new BizException("不在可以接受志愿的时间内");
+            Will will = willDao.queryWillById(willIds.size()>1?willIds.get(0):"");
+            Project project = projectDao.queryProjectById(will.getPeriodId());
+            List<Will> acceptedWill = willDao.queryAcceptedWillsByProjectId(will.getProjectId());
+
+            if(acceptedWill.size()+willIds.size() > project.getParticipantAmount()){
+                throw new BizException("超过容纳人数上限");
             }
 
             return willDao.acceptWill(directorUserName, willIds);
-        }catch (Exception e){
+        } catch (BizException bizErr){
+            throw bizErr;
+        } catch (Exception e){
             log.error("接受志愿失败",e);
             throw new BizException("接受志愿失败");
         }
+    }
+
+    @Override
+    public List<Will> getAcceptedWillsByProjectId(String projectId) {
+        try{
+            return willDao.queryAcceptedWillsByProjectId(projectId);
+        }catch (Exception e){
+            log.error("查询课程：\'{}\'已选中志愿", projectId);
+        }
+        return null;
     }
 
     @Override

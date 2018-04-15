@@ -24,7 +24,7 @@ interface ProjectsDao {
     @Results(
             @Result(property = "director", column = "director_id", javaType=Director.class, one = @One(select = "getDirectorById"))
     )
-    List<Projects> queryProjects(@Param('offset') int offset, @Param('amount') int amount)
+    List<Project> queryProjects(@Param('offset') int offset, @Param('amount') int amount)
 
     @Select("select * from director where id = #{id} limit 1")
     Director getDirectorById(Integer id);
@@ -32,10 +32,13 @@ interface ProjectsDao {
     @Select("select * from project where name=#{Name} limit 1")
     Project queryProjectByName(String Name)
 
+    @Select("select * from project where id=#{id} limit 1")
+    Project queryProjectById(String projectId)
+
     @UpdateProvider(type = UpdateProjectInfo, method = 'provide')
     int updateProjectInfo(Project project)
 
-    @Insert("insert into project(name, preview_image, description, director_id, period_id, begin, end) values(#{name}, #{preview_image}, #{description}, #{director_id}, #{period_id}, #{begin}, #{end})")
+    @Insert("insert into project(name, preview_image, description, director_id, period_id, participant_amount, begin, end) values(#{name}, #{preview_image}, #{description}, #{director_id}, #{period_id}, #{participantAmount}, #{begin}, #{end})")
     int addProject(Project project);
 
     @Select('select * from project join director on project.director_id=director.id where director.user_name=#{directorUserName}')
@@ -61,10 +64,13 @@ interface ProjectsDao {
                     if ((project.period_id ?: '') == '') {
                         SET( "period_id='$project.period_id'")
                     }
+                    if((project.participantAmount?:0) == 0){
+                        SET("participant_amount='$project.participantAmount'")
+                    }
                     if ((project.begin ?: '') == '') {
                         SET("begin='$project.begin'")
                     }
-                    if ((project.end ?: '')) {
+                    if ((project.end ?: '')=='') {
                         SET("end='$project.end'")
                     }
                     WHERE("id='$project.id'")

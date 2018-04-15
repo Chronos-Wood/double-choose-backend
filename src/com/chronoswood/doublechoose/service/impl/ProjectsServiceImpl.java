@@ -92,11 +92,11 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     //Show the list of professor
-    public List<Projects> showProjects(int offset, int amount) {
-        List<Projects> result = null;
+    public List<Project> showProjects(int offset, int amount) {
+        List<Project> result = null;
         try{
             //先查缓存
-            result = redisService.getList(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), Projects.class);
+            result = redisService.getList(ProjectKey.projectKeyPrefix, String.format("projects:%d:%d", offset, amount), Project.class);
             if (result != null) {
                 return result;
             }
