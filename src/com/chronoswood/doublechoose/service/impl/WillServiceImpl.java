@@ -11,11 +11,16 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -43,26 +48,30 @@ public class WillServiceImpl implements WillService {
 
         try{
             val wills = new ArrayList<Will>(3);
-            for(int i=1; i<=3; i++){
+            for(int i=0; i<3; i++){
                 val will = new Will();
-                will.setPrecedence(i);
+                will.setPrecedence(i + 1);
                 will.setStudentId(String.valueOf(student.getId()));
                 will.setStudentName(studentUserName);
-                will.setPeriodId(projectIds.get(i));
+                will.setProjectId(projectIds.get(i));
+                will.setPeriodId(period.getId() + "");
                 wills.add(will);
             }
 
             return willDao.storeWill(wills);
-        }catch (Exception e){
+        } catch (DuplicateKeyException e) {
+            throw new BizException("无法重复提交志愿");
+        } catch (Exception e){
             log.error("无法提交志愿", e);
             throw new BizException("无法提交志愿");
         }
     }
 
     @Override
-    public List<Will> queryWillByStudentUserName(String studentUserName) {
+    public Map<String, List<Will>> queryWillByStudentUserName(String studentUserName) {
         try{
-            return willDao.queryAcceptedWillsByStudentUserName(studentUserName);
+            List<Will> willList =  willDao.queryWillsByStudentUserName(studentUserName);
+            return willList.stream().collect(Collectors.groupingBy(Will::getPeriodId));
         }catch (Exception e){
             log.error("无法查询提交记录", e);
             throw new BizException("无法查询提交记录");

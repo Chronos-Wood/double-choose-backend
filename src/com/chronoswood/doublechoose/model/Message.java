@@ -20,7 +20,7 @@ public enum Message {
     NO_PERMISSION(500207, "无访问权限"),
 
     BIND_ERROR(500300, "参数绑定异常: %s"),
-    BIZ_ERROR(500400, "业务处理异常: %s"),
+    BIZ_ERROR(500400, "%s"),
     INSERT_ERROR(500500, "数据库异常");
 
     private Integer code;
