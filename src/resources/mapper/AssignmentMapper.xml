@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chronoswood.doublechoose.dao.AssignmentDao">
+    <insert id="insertOrUpdate" useGeneratedKeys="true">
+        INSERT INTO assignment (`project_id`, `project_name`,`student_id`, `student_name`, `director_id`, `director_name`, `period_id`, `precedence`) VALUES
+            <foreach collection="acceptedWills" item="acceptedWill" separator=",">
+                (
+                #{acceptedWill.projectId},
+                #{acceptedWill.projectName},
+                #{acceptedWill.studentId},
+                #{acceptedWill.studentName},
+                #{acceptedWill.directorId},
+                #{acceptedWill.directorName},
+                #{acceptedWill.periodId},
+                #{acceptedWill.precedence}
+                )
+            </foreach>
+        ON DUPLICATE KEY UPDATE
+        `project_id`=VALUES(`project_id`),
+        `project_name`=VALUES(`project_name`),
+        `student_id`=VALUES(`student_id`),
+        `student_name`=VALUES(`student_name`),
+        `director_id`=VALUES(`director_id`),
+        `director_name`=VALUES(`director_name`),
+        `period_id`=VALUES(`period_id`),
+        `precedence`=VALUES(`precedence`)
+    </insert>
+</mapper>
