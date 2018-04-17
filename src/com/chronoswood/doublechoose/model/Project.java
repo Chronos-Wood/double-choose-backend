@@ -12,6 +12,7 @@ public class Project {
     private String description;
     private Integer directorId;
     private Integer periodId;
+    private Integer participantAmount;
     private String begin;//是否有存时间的数据类型
     private String end;
     private LocalDateTime createTime;
