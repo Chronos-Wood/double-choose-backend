@@ -1,6 +1,7 @@
 package com.chronoswood.doublechoose.service;
 
 import com.chronoswood.doublechoose.model.Will;
+import com.chronoswood.doublechoose.model.WillDto;
 
 import java.util.List;
 import java.util.Map;
