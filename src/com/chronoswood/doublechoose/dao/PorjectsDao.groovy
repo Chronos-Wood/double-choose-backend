@@ -38,7 +38,7 @@ interface ProjectsDao {
     @Insert("insert into project(name, preview_image, description, director_id, period_id, begin, end) values(#{name}, #{preview_image}, #{description}, #{director_id}, #{period_id}, #{begin}, #{end})")
     int addProject(Project project);
 
-    @Select('select * from project join director on project.director_id=director.id where director.user_name=#{directorUserName}')
+    @Select('select * from project join director on project.director_id=director.id where director.user_name=#{directorUserName} limit #{limit},#{amount}')
     List<Project> queryProjectsByDirectorUserName(@Param('directorUserName') String directorUserName,@Param('limit') int limit,@Param('amount') int amount);
 
     class UpdateProjectInfo {

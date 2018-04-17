@@ -13,4 +13,5 @@ public class ProjectKey extends AbstractBasePrefix {
     }
 
     public static ProjectKey projectKeyPrefix = new ProjectKey(TOKEN_EXPIRE_TIME, STUDENT_KEY_PREFIX);
+
 }

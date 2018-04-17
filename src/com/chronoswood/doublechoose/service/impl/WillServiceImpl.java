@@ -3,10 +3,7 @@ package com.chronoswood.doublechoose.service.impl;
 import com.chronoswood.doublechoose.dao.PeriodDao;
 import com.chronoswood.doublechoose.dao.WillDao;
 import com.chronoswood.doublechoose.exception.BizException;
-import com.chronoswood.doublechoose.model.Period;
-import com.chronoswood.doublechoose.model.PeriodType;
-import com.chronoswood.doublechoose.model.Student;
-import com.chronoswood.doublechoose.model.Will;
+import com.chronoswood.doublechoose.model.*;
 import com.chronoswood.doublechoose.service.DirectorService;
 import com.chronoswood.doublechoose.service.PeriodService;
 import com.chronoswood.doublechoose.service.StudentService;
@@ -94,8 +91,9 @@ public class WillServiceImpl implements WillService {
     }
 
     @Override
-    public List<Will> queryWill(String directorUserName, String projectId, int offset, int amount) {
+    public List<WillDto> queryWill(String directorUserName, String projectId, int offset, int amount) {
         try{
+
             return willDao.queryWillByDirectorUsernameAndProjectId(projectId, directorUserName, offset, amount);
         }catch (Exception e){
             log.error("查询收到的志愿失败", e);
