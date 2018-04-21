@@ -4,10 +4,11 @@
 <mapper namespace="com.chronoswood.doublechoose.dao.WillDao">
 
     <resultMap id="willMap" type="com.chronoswood.doublechoose.model.Will">
+        <id column="id" property="id"/>
         <result column="precedence" property="precedence"/>
     </resultMap>
     <resultMap id="studentMap" type="com.chronoswood.doublechoose.model.Student">
-        <id column="id" property="id"/>
+        <!--<id column="id" property="id"/>-->
         <result column="gender" property="gender"/>
         <result column="name" property="name"/>
         <result column="user_name" property="userName"/>
@@ -44,10 +45,10 @@
         will.*,
         student.*
         FROM will
-        LEFT JOIN project ON project.id=will.project_id
-        LEFT JOIN period on will.period_id=period.id and NOW() >= period.begin and NOW() &lt;= period.end
-        left JOIN student ON student.id = will.student_id
-        left JOIN director ON  project.director_id = director.id and director.user_name = #{directorUsername}
+        INNER JOIN project ON project.id=will.project_id
+        INNER JOIN period on will.period_id=period.id and NOW() >= period.begin and NOW() &lt;= period.end
+        INNER JOIN student ON student.id = will.student_id
+        INNER JOIN director ON  project.director_id = director.id and director.user_name = #{directorUsername}
         where project_id=#{projectId}
         ORDER BY will.update_time DESC
         LIMIT #{offset}, #{amount}

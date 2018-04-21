@@ -17,4 +17,6 @@ public class Project {
     private String end;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+
+    private Director director;
 }

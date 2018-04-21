@@ -50,7 +50,7 @@ SELECT
   director.name as directorName,
   student.id as studentId,
   student.name as studentName,
-  project.period_id as periodId,
+  will.period_id as periodId,
   project.begin as projectBeginTime,
   project.end as projectEndTime,
   project.create_time as createTime,
@@ -62,7 +62,7 @@ FROM will
    LEFT JOIN period on (will.period_id=period.id and NOW() >= period.begin and NOW() <= period.end) 
    left join student on( student_id = will.student_id and student.user_name=#{studentUserName})
    left join director on director.id = project.director_id
-  ORDER BY will.precedence, will.update_time limit 3
+  ORDER BY will.precedence, will.update_time
 ''')
     List<Will> queryWillsByStudentUserName(@Param('studentUserName') String studentUserName);
 
