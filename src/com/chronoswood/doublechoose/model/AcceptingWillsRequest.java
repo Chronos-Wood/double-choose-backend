@@ -9,4 +9,6 @@ import java.util.List;
 public class AcceptingWillsRequest {
     @SuppressWarnings("unchecked")
     List<String> willIds = Collections.EMPTY_LIST;
+
+    AccountVO accountVO;
 }

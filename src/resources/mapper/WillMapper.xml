@@ -4,11 +4,11 @@
 <mapper namespace="com.chronoswood.doublechoose.dao.WillDao">
 
     <resultMap id="willMap" type="com.chronoswood.doublechoose.model.Will">
-        <id column="id" property="id"/>
+        <!--<id column="id" property="id"/>-->
         <result column="precedence" property="precedence"/>
     </resultMap>
     <resultMap id="studentMap" type="com.chronoswood.doublechoose.model.Student">
-        <!--<id column="id" property="id"/>-->
+        <id column="id" property="id"/>
         <result column="gender" property="gender"/>
         <result column="name" property="name"/>
         <result column="user_name" property="userName"/>
@@ -33,8 +33,8 @@
     </insert>
 
     <update id="acceptWill">
-        UPDATE will JOIN director JOIN project ON will.period_id=project.id AND project.director_id=director.id AND director.user_name=#{directorUserName}
-        SET accepted = 1 WHERE id IN
+        UPDATE will JOIN director INNER JOIN project ON will.period_id=project.id AND project.director_id=director.id AND director.user_name=#{directorUserName}
+        SET accepted = 1 WHERE will.id IN
         <foreach collection="willIds" item="willId" separator="," open="(" close=")">
             #{willId}
         </foreach>
@@ -46,10 +46,10 @@
         student.*
         FROM will
         INNER JOIN project ON project.id=will.project_id
-        INNER JOIN period on will.period_id=period.id and NOW() >= period.begin and NOW() &lt;= period.end
+        INNER JOIN period on will.period_id=period.id
         INNER JOIN student ON student.id = will.student_id
         INNER JOIN director ON  project.director_id = director.id and director.user_name = #{directorUsername}
-        where project_id=#{projectId}
+        where project_id=#{projectId} and accepted=0
         ORDER BY will.update_time DESC
         LIMIT #{offset}, #{amount}
     </select>

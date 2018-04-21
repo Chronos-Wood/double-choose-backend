@@ -97,11 +97,11 @@ public class WillServiceImpl implements WillService {
         }
 
         try{
-            Will will = willDao.queryWillById(willIds.size()>1?willIds.get(0):"");
+            Will will = willDao.queryWillById(willIds.size()>0?willIds.get(0):"");
             Project project = projectDao.queryProjectById(will.getPeriodId());
             List<Will> acceptedWill = willDao.queryAcceptedWillsByProjectId(will.getProjectId());
 
-            if(acceptedWill.size()+willIds.size() > project.getParticipantAmount()){
+            if(project.getParticipantAmount() != null && acceptedWill.size()+willIds.size() > project.getParticipantAmount()){
                 throw new BizException("超过容纳人数上限");
             }
 

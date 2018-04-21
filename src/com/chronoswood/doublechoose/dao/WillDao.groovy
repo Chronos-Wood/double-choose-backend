@@ -86,11 +86,11 @@ SELECT
   will.precedence as precedence
 FROM will
   JOIN project ON (project.id=will.project_id AND project.id=#{projectId})
-  JOIN period ON (will.period_id=period.id and NOW() >= period.begin and NOW() <= period.end)
+  JOIN period ON (will.period_id=period.id)
   JOIN student ON student.id = will.student_id
   JOIN director ON project.director_id = director.id
 WHERE will.accepted=1
-ORDER BY (will.precedence, will.update_time) limit 3;
+ORDER BY will.precedence, will.update_time
 ''')
     List<Will> queryAcceptedWillsByProjectId(String projectId);
 
