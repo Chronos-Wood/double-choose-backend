@@ -39,4 +39,29 @@ class AssignmentTest extends Specification {
         expect:
         rowAffected > 0
     }
+
+    def '查询数据'(){
+        setup:
+        Will will = new Will(
+                projectName: 'abc',
+                projectId: '100',
+                previewImageURL: '',
+                projectDescription: 'abc',
+                directorId: '100',
+                directorName: 'abc',
+                studentId: '100',
+                studentName: 'student',
+                periodId: '100',
+                projectBeginTime: LocalDateTime.now(),
+                projectEndTime: LocalDateTime.now(),
+                precedence: 1
+        )
+        int rowAdded = assignmentDao.insertOrUpdate([will])
+        int rowDeleted = assignmentDao.queryAssignment(0, 1).size();
+
+        expect:
+        rowAdded == 1
+        rowDeleted == 1
+
+    }
 }

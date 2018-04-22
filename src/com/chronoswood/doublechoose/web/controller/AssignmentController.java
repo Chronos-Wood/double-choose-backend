@@ -7,6 +7,7 @@ import com.chronoswood.doublechoose.model.Role;
 import com.chronoswood.doublechoose.service.AssignmentService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,5 +22,10 @@ public class AssignmentController {
             return new Result<>(Message.NO_PERMISSION,null);
         }
         return new Result<>(Message.SUCCESS, assignmentService.syncResult());
+    }
+
+    @RequestMapping(path = "result")
+    public Result<?> result(@RequestParam("offset") int offset, @RequestParam("amount") int amount){
+        return new Result<>(Message.SUCCESS, assignmentService.queryAssignment(offset, amount));
     }
 }
