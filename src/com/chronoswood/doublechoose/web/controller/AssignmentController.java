@@ -5,6 +5,7 @@ import com.chronoswood.doublechoose.model.Message;
 import com.chronoswood.doublechoose.model.Result;
 import com.chronoswood.doublechoose.model.Role;
 import com.chronoswood.doublechoose.service.AssignmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user/result")
 @CrossOrigin("*")
 public class AssignmentController {
+    @Autowired
     private AssignmentService assignmentService;
 
     @RequestMapping(path = "/sync")
