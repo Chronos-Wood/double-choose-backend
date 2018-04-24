@@ -18,6 +18,8 @@ import java.time.LocalDateTime
 class AssignmentTest extends Specification {
     @Autowired
     private AssignmentDao assignmentDao
+    @Autowired
+    private AssignmentService assignmentService;
 
     def '插入数据'(){
         setup:
@@ -48,7 +50,7 @@ class AssignmentTest extends Specification {
                 previewImageURL: '',
                 projectDescription: 'abc',
                 directorId: '100',
-                directorName: 'abc',
+                directorName: 'cde',
                 studentId: '100',
                 studentName: 'student',
                 periodId: '100',
@@ -60,8 +62,13 @@ class AssignmentTest extends Specification {
         int rowDeleted = assignmentDao.queryAssignment(0, 1).size();
 
         expect:
-        rowAdded == 1
+        rowAdded >= 1
         rowDeleted == 1
 
+    }
+
+    def '同步'(){
+        setup:
+        assignmentService.syncResult()
     }
 }

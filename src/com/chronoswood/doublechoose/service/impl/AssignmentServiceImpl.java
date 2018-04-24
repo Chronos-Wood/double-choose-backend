@@ -30,11 +30,15 @@ public class AssignmentServiceImpl implements AssignmentService {
         int acc = 0;
 
         List<Will> result = Collections.EMPTY_LIST;
-        do{
+        while(true){
             result = willDao.queryAcceptedWill(offset, amount);
+            if(result.isEmpty()){
+                break;
+            }
             acc += assignmentDao.insertOrUpdate(result);
             offset += result.size();
-        }while(!result.isEmpty());
+        }
+
         return acc;
     }
 
