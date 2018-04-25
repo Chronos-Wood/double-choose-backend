@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BizException extends RuntimeException {
+    private static final long serialVersionUID = -5809389053058449023L;
     private Message errMsg;
 
     public BizException(Message message) {
@@ -17,7 +18,7 @@ public class BizException extends RuntimeException {
 
     public BizException(String message) {
         super(message);
-        this.errMsg = Message.BIZ_ERROR.bindArgs(message);
+        this.errMsg = Message.BIZ_ERROR.setErrMsg(message);
     }
 
     public BizException(Throwable cause) {

@@ -28,7 +28,14 @@ public enum Message {
     private String message;
 
     public Message bindArgs(Object... args) {
+        if (!this.message.contains("%s")) {
+            this.message = "参数绑定异常: %s";
+        }
         this.message = String.format(this.message, args);
+        return this;
+    }
+    public Message setErrMsg(String errMsg) {
+        this.message = errMsg;
         return this;
     }
 }
